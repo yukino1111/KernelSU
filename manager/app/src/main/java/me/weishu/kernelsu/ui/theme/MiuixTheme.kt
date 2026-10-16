@@ -1,6 +1,7 @@
 package me.weishu.kernelsu.ui.theme
 
 import android.app.Activity
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -45,8 +46,10 @@ fun MiuixKernelSUTheme(
     val resolvedKeyColor: Color? = when {
         appSettings.keyColor != 0 -> Color(appSettings.keyColor)
         appSettings.colorMode.isMonet ->
-            if (darkTheme) dynamicDarkColorScheme(context).primary
-            else dynamicLightColorScheme(context).primary
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (darkTheme) dynamicDarkColorScheme(context).primary
+                else dynamicLightColorScheme(context).primary
+            } else null
 
         else -> null
     }
@@ -56,9 +59,9 @@ fun MiuixKernelSUTheme(
             ColorMode.SYSTEM -> ColorSchemeMode.System
             ColorMode.LIGHT -> ColorSchemeMode.Light
             ColorMode.DARK -> ColorSchemeMode.Dark
-            ColorMode.MONET_SYSTEM -> ColorSchemeMode.MonetSystem
-            ColorMode.MONET_LIGHT -> ColorSchemeMode.MonetLight
-            ColorMode.MONET_DARK, ColorMode.DARK_AMOLED -> ColorSchemeMode.MonetDark
+            ColorMode.MONET_SYSTEM -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) ColorSchemeMode.MonetSystem else ColorSchemeMode.System
+            ColorMode.MONET_LIGHT -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) ColorSchemeMode.MonetLight else ColorSchemeMode.Light
+            ColorMode.MONET_DARK, ColorMode.DARK_AMOLED -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) ColorSchemeMode.MonetDark else ColorSchemeMode.Dark
         },
         keyColor = resolvedKeyColor,
         isDark = darkTheme,

@@ -172,106 +172,108 @@ fun ColorPaletteScreenMiuix(
                         },
                     )
 
-                    Card(
-                        modifier = Modifier
-                            .padding(top = 12.dp)
-                            .fillMaxWidth(),
-                    ) {
-                        SwitchPreference(
-                            title = stringResource(id = R.string.settings_monet),
-                            startAction = {
-                                Icon(
-                                    Icons.Rounded.Wallpaper,
-                                    modifier = Modifier.padding(end = 6.dp),
-                                    contentDescription = stringResource(id = R.string.settings_monet),
-                                    tint = colorScheme.onBackground
-                                )
-                            },
-                            checked = uiState.miuixMonet,
-                            onCheckedChange = {
-                                actions.onSetMiuixMonet(it)
-                            }
-                        )
-
-                        AnimatedVisibility(
-                            visible = uiState.miuixMonet
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        Card(
+                            modifier = Modifier
+                                .padding(top = 12.dp)
+                                .fillMaxWidth(),
                         ) {
-                            Column {
-                                val colorItems = listOf(
-                                    stringResource(id = R.string.settings_key_color_default),
-                                    stringResource(id = R.string.color_red),
-                                    stringResource(id = R.string.color_pink),
-                                    stringResource(id = R.string.color_purple),
-                                    stringResource(id = R.string.color_deep_purple),
-                                    stringResource(id = R.string.color_indigo),
-                                    stringResource(id = R.string.color_blue),
-                                    stringResource(id = R.string.color_cyan),
-                                    stringResource(id = R.string.color_teal),
-                                    stringResource(id = R.string.color_green),
-                                    stringResource(id = R.string.color_yellow),
-                                    stringResource(id = R.string.color_amber),
-                                    stringResource(id = R.string.color_orange),
-                                    stringResource(id = R.string.color_brown),
-                                    stringResource(id = R.string.color_blue_grey),
-                                    stringResource(id = R.string.color_sakura),
-                                )
-                                val colorValues = listOf(0) + keyColorOptions
-                                OverlayDropdownPreference(
-                                    title = stringResource(id = R.string.settings_key_color),
-                                    items = colorItems,
-                                    startAction = {
-                                        Icon(
-                                            Icons.Rounded.Colorize,
-                                            modifier = Modifier.padding(end = 6.dp),
-                                            contentDescription = stringResource(id = R.string.settings_key_color),
-                                            tint = colorScheme.onBackground
-                                        )
-                                    },
-                                    selectedIndex = colorValues.indexOf(uiState.keyColor).takeIf { it >= 0 } ?: 0,
-                                    onSelectedIndexChange = { index ->
-                                        actions.onSetKeyColor(colorValues[index])
-                                    }
-                                )
+                            SwitchPreference(
+                                title = stringResource(id = R.string.settings_monet),
+                                startAction = {
+                                    Icon(
+                                        Icons.Rounded.Wallpaper,
+                                        modifier = Modifier.padding(end = 6.dp),
+                                        contentDescription = stringResource(id = R.string.settings_monet),
+                                        tint = colorScheme.onBackground
+                                    )
+                                },
+                                checked = uiState.miuixMonet,
+                                onCheckedChange = {
+                                    actions.onSetMiuixMonet(it)
+                                }
+                            )
 
-                                AnimatedVisibility(
-                                    visible = uiState.keyColor != 0
-                                ) {
-                                    Column {
-                                        val styles = PaletteStyle.entries
-                                        OverlayDropdownPreference(
-                                            title = stringResource(R.string.settings_color_style),
-                                            startAction = {
-                                                Icon(
-                                                    Icons.Rounded.Style,
-                                                    modifier = Modifier.padding(end = 6.dp),
-                                                    contentDescription = stringResource(id = R.string.settings_color_style),
-                                                    tint = colorScheme.onBackground
-                                                )
-                                            },
-                                            items = styles.map { it.name },
-                                            selectedIndex = styles.indexOfFirst { it.name == uiState.colorStyle }.coerceAtLeast(0),
-                                            onSelectedIndexChange = { index ->
-                                                actions.onSetColorStyle(styles[index].name)
-                                            }
-                                        )
+                            AnimatedVisibility(
+                                visible = uiState.miuixMonet
+                            ) {
+                                Column {
+                                    val colorItems = listOf(
+                                        stringResource(id = R.string.settings_key_color_default),
+                                        stringResource(id = R.string.color_red),
+                                        stringResource(id = R.string.color_pink),
+                                        stringResource(id = R.string.color_purple),
+                                        stringResource(id = R.string.color_deep_purple),
+                                        stringResource(id = R.string.color_indigo),
+                                        stringResource(id = R.string.color_blue),
+                                        stringResource(id = R.string.color_cyan),
+                                        stringResource(id = R.string.color_teal),
+                                        stringResource(id = R.string.color_green),
+                                        stringResource(id = R.string.color_yellow),
+                                        stringResource(id = R.string.color_amber),
+                                        stringResource(id = R.string.color_orange),
+                                        stringResource(id = R.string.color_brown),
+                                        stringResource(id = R.string.color_blue_grey),
+                                        stringResource(id = R.string.color_sakura),
+                                    )
+                                    val colorValues = listOf(0) + keyColorOptions
+                                    OverlayDropdownPreference(
+                                        title = stringResource(id = R.string.settings_key_color),
+                                        items = colorItems,
+                                        startAction = {
+                                            Icon(
+                                                Icons.Rounded.Colorize,
+                                                modifier = Modifier.padding(end = 6.dp),
+                                                contentDescription = stringResource(id = R.string.settings_key_color),
+                                                tint = colorScheme.onBackground
+                                            )
+                                        },
+                                        selectedIndex = colorValues.indexOf(uiState.keyColor).takeIf { it >= 0 } ?: 0,
+                                        onSelectedIndexChange = { index ->
+                                            actions.onSetKeyColor(colorValues[index])
+                                        }
+                                    )
 
-                                        val specs = ColorSpec.SpecVersion.entries
-                                        OverlayDropdownPreference(
-                                            title = stringResource(R.string.settings_color_spec),
-                                            startAction = {
-                                                Icon(
-                                                    Icons.Rounded.DesignServices,
-                                                    modifier = Modifier.padding(end = 6.dp),
-                                                    contentDescription = stringResource(id = R.string.settings_color_spec),
-                                                    tint = colorScheme.onBackground
-                                                )
-                                            },
-                                            items = specs.map { it.name },
-                                            selectedIndex = specs.indexOfFirst { it.name == uiState.colorSpec }.coerceAtLeast(0),
-                                            onSelectedIndexChange = { index ->
-                                                actions.onSetColorSpec(specs[index].name)
-                                            }
-                                        )
+                                    AnimatedVisibility(
+                                        visible = uiState.keyColor != 0
+                                    ) {
+                                        Column {
+                                            val styles = PaletteStyle.entries
+                                            OverlayDropdownPreference(
+                                                title = stringResource(R.string.settings_color_style),
+                                                startAction = {
+                                                    Icon(
+                                                        Icons.Rounded.Style,
+                                                        modifier = Modifier.padding(end = 6.dp),
+                                                        contentDescription = stringResource(id = R.string.settings_color_style),
+                                                        tint = colorScheme.onBackground
+                                                    )
+                                                },
+                                                items = styles.map { it.name },
+                                                selectedIndex = styles.indexOfFirst { it.name == uiState.colorStyle }.coerceAtLeast(0),
+                                                onSelectedIndexChange = { index ->
+                                                    actions.onSetColorStyle(styles[index].name)
+                                                }
+                                            )
+
+                                            val specs = ColorSpec.SpecVersion.entries
+                                            OverlayDropdownPreference(
+                                                title = stringResource(R.string.settings_color_spec),
+                                                startAction = {
+                                                    Icon(
+                                                        Icons.Rounded.DesignServices,
+                                                        modifier = Modifier.padding(end = 6.dp),
+                                                        contentDescription = stringResource(id = R.string.settings_color_spec),
+                                                        tint = colorScheme.onBackground
+                                                    )
+                                                },
+                                                items = specs.map { it.name },
+                                                selectedIndex = specs.indexOfFirst { it.name == uiState.colorSpec }.coerceAtLeast(0),
+                                                onSelectedIndexChange = { index ->
+                                                    actions.onSetColorSpec(specs[index].name)
+                                                }
+                                            )
+                                        }
                                     }
                                 }
                             }
