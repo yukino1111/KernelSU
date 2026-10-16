@@ -26,10 +26,9 @@ fun getGitDescribe(): String {
 }
 
 fun getVersionCode(): Int {
-    val commitCount = getGitCommitCount()
-    return 30000 + commitCount
+    return 32629
 }
 
 fun getVersionName(): String {
-    return getGitDescribe()
+    return "v3.3.0-28-g33d0c920"
 }
